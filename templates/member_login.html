@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Member Login - {{ config.GYM_NAME }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body class="auth-page">
+    <div class="auth-container">
+        <div class="auth-card">
+            <div class="auth-header">
+                <div class="auth-logo">🏋️</div>
+                <h1>Member Portal</h1>
+                <div class="gym-sub">{{ config.GYM_NAME }}</div>
+                <p>Login to view your membership details</p>
+            </div>
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="flash flash-{{ category }}">{{ message }}</div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+            <form method="POST" action="{{ url_for('member_auth.login') }}" class="auth-form">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <div class="form-group">
+                    <label for="email">Your Email</label>
+                    <input type="email" id="email" name="email" required autocomplete="email" placeholder="Enter your registered email">
+                </div>
+                <div class="form-group">
+                    <label for="trainer_name">Trainer Name</label>
+                    <select id="trainer_name" name="trainer_name" required>
+                        <option value="" disabled {% if not request.form.get('trainer_name') %}selected{% endif %}>Select your trainer</option>
+                        {% for trainer in trainers %}
+                            <option value="{{ trainer }}" {% if request.form.get('trainer_name') == trainer %}selected{% endif %}>{{ trainer }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary btn-block" style="margin-top:8px; padding:14px;">🔐 Send Login Code</button>
+            </form>
+            <div class="auth-links">
+                <a href="{{ url_for('index') }}">← Back to login options</a>
+            </div>
+            <p class="auth-note">You'll receive a 6-digit code to your registered email. Contact your trainer if you don't receive it.</p>
+            <div class="auth-footer">
+                <p style="margin-top: 20px; padding-top: 20px; border-top: 1px solid var(--border-glow); color: var(--text-muted); font-size: 12px;">
+                    Made with 💪 by <strong style="color: var(--accent);">Nishad Patil</strong><br>
+                    <span style="font-size: 11px; color: var(--text-muted); margin-top: 4px; display: inline-block;">Contact: <a href="mailto:nishadpatil2008@gmail.com" style="color: var(--accent); text-decoration: none;">nishadpatil2008@gmail.com</a></span>
+                </p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

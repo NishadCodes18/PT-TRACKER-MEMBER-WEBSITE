@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Portal - {{ config.GYM_NAME }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <style>
+        .portal-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+            margin-top: 32px;
+        }
+
+        .portal-option {
+            background: var(--bg-card);
+            border: 2px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 40px 30px;
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition);
+            text-decoration: none;
+            display: block;
+        }
+
+        .portal-option:hover {
+            border-color: var(--primary);
+            box-shadow: 0 0 30px var(--primary-glow);
+            transform: translateY(-4px);
+        }
+
+        .portal-icon {
+            font-size: 64px;
+            margin-bottom: 20px;
+        }
+
+        .portal-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 12px;
+        }
+
+        .portal-description {
+            color: var(--text-muted);
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .portal-option.trainer-option {
+            border-color: var(--accent);
+        }
+
+        .portal-option.trainer-option:hover {
+            border-color: var(--accent);
+            box-shadow: 0 0 30px rgba(250, 204, 21, 0.25);
+        }
+    </style>
+</head>
+<body class="auth-page">
+    <div class="auth-container">
+        <div class="auth-card">
+            <div class="auth-header">
+                <div class="auth-logo">💪</div>
+                <h1>{{ config.GYM_NAME }}</h1>
+                <div class="gym-sub">Fitness Management Portal</div>
+                <p>Select your login type</p>
+            </div>
+
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="flash flash-{{ category }}">{{ message }}</div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+
+            <div class="portal-grid">
+                <a href="{{ url_for('member_auth.login') }}" class="portal-option">
+                    <div class="portal-icon">🏋️</div>
+                    <div class="portal-title">Member</div>
+                    <div class="portal-description">
+                        View your membership details, training schedule, and expiry date
+                    </div>
+                </a>
+
+                <a href="https://pt-tracker-website-eta.vercel.app/" class="portal-option trainer-option">
+                    <div class="portal-icon">👨‍🏫</div>
+                    <div class="portal-title">Trainer</div>
+                    <div class="portal-description">
+                        Manage clients, track payments, and view analytics
+                    </div>
+                </a>
+            </div>
+
+            <div class="auth-footer" style="margin-top: 40px;">
+                <p style="padding-top: 20px; border-top: 1px solid var(--border-glow); color: var(--text-muted); font-size: 12px;">
+                    Made with 💪 by <strong style="color: var(--accent);">Nishad Patil</strong><br>
+                    <span style="font-size: 11px; color: var(--text-muted); margin-top: 4px; display: inline-block;">Contact: <a href="mailto:nishadpatil2008@gmail.com" style="color: var(--accent); text-decoration: none;">nishadpatil2008@gmail.com</a></span>
+                </p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

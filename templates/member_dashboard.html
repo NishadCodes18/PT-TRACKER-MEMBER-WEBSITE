@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Membership - {{ config.GYM_NAME }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/member-portal.css') }}">
+</head>
+<body>
+    <div class="dashboard-container">
+        <header class="dashboard-header">
+            <div class="header-content">
+                <h1>{{ config.GYM_NAME }} - Member Portal</h1>
+                <div class="header-actions">
+                    <a href="{{ url_for('member_auth.logout') }}" class="btn btn-secondary">Logout</a>
+                </div>
+            </div>
+        </header>
+
+        <main class="dashboard-main">
+            <div class="welcome-card">
+                <h2>Welcome, {{ client.name }}!</h2>
+                <p>Here are your membership details</p>
+            </div>
+
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="flash flash-{{ category }}">{{ message }}</div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+
+            <div class="cards-grid">
+                <div class="info-card">
+                    <div class="card-header">
+                        <h3>👤 Personal Information</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="info-row">
+                            <span class="info-label">Name:</span>
+                            <span class="info-value">{{ client.name }}</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Email:</span>
+                            <span class="info-value">{{ client.email }}</span>
+                        </div>
+                        {% if client.contact_number %}
+                        <div class="info-row">
+                            <span class="info-label">Phone:</span>
+                            <span class="info-value">{{ client.contact_number }}</span>
+                        </div>
+                        {% endif %}
+                        <div class="info-row">
+                            <span class="info-label">Status:</span>
+                            <span class="info-value status-{{ client.status }}">{{ client.status|title }}</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="info-card">
+                    <div class="card-header">
+                        <h3>💪 Training Details</h3>
+                    </div>
+                    <div class="card-body">
+                        {% if trainer %}
+                        <div class="info-row">
+                            <span class="info-label">Trainer:</span>
+                            <span class="info-value">{{ trainer.username }}</span>
+                        </div>
+                        {% endif %}
+                        <div class="info-row">
+                            <span class="info-label">Tier:</span>
+                            <span class="info-value">{{ client.pt_tier }}</span>
+                        </div>
+                        {% if client.time_slot %}
+                        <div class="info-row">
+                            <span class="info-label">Time Slot:</span>
+                            <span class="info-value">{{ client.time_slot }}</span>
+                        </div>
+                        {% endif %}
+                        {% if client.gym_name %}
+                        <div class="info-row">
+                            <span class="info-label">Gym:</span>
+                            <span class="info-value">{{ client.gym_name }}</span>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="info-card highlight-card">
+                    <div class="card-header">
+                        <h3>📅 Membership Expiry</h3>
+                    </div>
+                    <div class="card-body">
+                        {% if client.renewal_date %}
+                        <div class="expiry-display">
+                            <div class="expiry-date">{{ client.renewal_date.strftime('%B %d, %Y') }}</div>
+                            {% set days_left = (client.renewal_date - now).days %}
+                            {% if days_left < 0 %}
+                                <div class="expiry-status expired">Expired {{ (-days_left) }} days ago</div>
+                                <p class="expiry-message">Please contact your trainer to renew your membership.</p>
+                            {% elif days_left <= 7 %}
+                                <div class="expiry-status warning">Expires in {{ days_left }} days</div>
+                                <p class="expiry-message">Your membership is expiring soon. Please renew to continue training.</p>
+                            {% else %}
+                                <div class="expiry-status active">{{ days_left }} days remaining</div>
+                                <p class="expiry-message">Your membership is active.</p>
+                            {% endif %}
+                        </div>
+                        {% else %}
+                        <div class="expiry-display">
+                            <p class="expiry-message">No renewal date set. Contact your trainer for details.</p>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                {% if client.notes %}
+                <div class="info-card">
+                    <div class="card-header">
+                        <h3>📝 Notes from Trainer</h3>
+                    </div>
+                    <div class="card-body">
+                        <p>{{ client.notes }}</p>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+
+            <div class="contact-card">
+                <p>Questions about your membership? Contact your trainer {% if trainer and trainer.email %}<a href="mailto:{{ trainer.email }}">{{ trainer.email }}</a>{% endif %}</p>
+            </div>
+        </main>
+
+        <footer class="dashboard-footer">
+            <p>Made with 💪 by <strong>Nishad Patil</strong> | <a href="mailto:nishadpatil2008@gmail.com">nishadpatil2008@gmail.com</a></p>
+        </footer>
+    </div>
+</body>
+</html>

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verify OTP - Member Portal</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body class="auth-page">
+    <div class="auth-container">
+        <div class="auth-card">
+            <div class="auth-header">
+                <div class="auth-logo">🔐</div>
+                <h1>Enter Login Code</h1>
+                <p>We sent a 6-digit code to <strong>{{ client.email }}</strong></p>
+            </div>
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="flash flash-{{ category }}">{{ message }}</div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+            <form method="POST" action="{{ url_for('member_auth.verify_otp') }}" class="auth-form">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <div class="form-group">
+                    <label for="otp">6-Digit Code</label>
+                    <input type="text" id="otp" name="otp" required pattern="[0-9]{6}" maxlength="6" autocomplete="one-time-code" placeholder="000000" style="font-size: 24px; text-align: center; letter-spacing: 8px;">
+                </div>
+                <button type="submit" class="btn btn-primary btn-block" style="margin-top:8px; padding:14px;">✅ Verify & Login</button>
+            </form>
+            <div class="auth-links">
+                <a href="{{ url_for('member_auth.login') }}">← Back to login</a>
+            </div>
+            <p class="auth-note">The code expires in 10 minutes. Check your spam folder if you don't see it.</p>
+        </div>
+    </div>
+</body>
+</html>

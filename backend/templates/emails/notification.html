@@ -1,0 +1,35 @@
+{% extends "emails/base.html" %}
+
+{% block email_content %}
+{% if recipient_name %}
+<div class="greeting">Hi {{ recipient_name }},</div>
+{% else %}
+<div class="greeting">Hello,</div>
+{% endif %}
+
+{% if notification_title %}
+<div class="content" style="font-size: 18px; font-weight: 700; color: #667eea; margin-bottom: 15px;">{{ notification_title }}</div>
+{% endif %}
+
+{% if main_message %}
+<div class="content">{{ main_message }}</div>
+{% endif %}
+
+{% if highlight_content %}
+<div class="highlight-box">{{ highlight_content }}</div>
+{% endif %}
+
+{% if additional_details %}
+<div class="content">{{ additional_details }}</div>
+{% endif %}
+
+{% if action_url %}
+<div style="text-align: center; margin: 25px 0;">
+    <a href="{{ action_url }}" class="cta-button">{{ action_text or 'View Details' }}</a>
+</div>
+{% endif %}
+
+{% if footer_message %}
+<div class="content" style="font-size: 14px; color: #777;">{{ footer_message }}</div>
+{% endif %}
+{% endblock %}

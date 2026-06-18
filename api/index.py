@@ -7,11 +7,9 @@ import logging
 logging.basicConfig(level=logging.WARNING)
 logger = logging.getLogger(__name__)
 
-# Add parent directories to path so we can import from backend
+# Add member-website directory to path so we can import from backend
 current_dir = os.path.dirname(__file__)
 member_website_dir = os.path.abspath(os.path.join(current_dir, '..'))
-parent_dir = os.path.abspath(os.path.join(member_website_dir, '..'))
-sys.path.insert(0, parent_dir)
 sys.path.insert(0, member_website_dir)
 
 # Set Vercel flag if not already set
@@ -20,7 +18,7 @@ os.environ.setdefault('VERCEL', 'true')
 # Load environment variables only if .env exists
 try:
     from dotenv import load_dotenv
-    env_path = os.path.join(parent_dir, '.env')
+    env_path = os.path.join(member_website_dir, '.env')
     if os.path.exists(env_path):
         load_dotenv(env_path)
 except Exception:

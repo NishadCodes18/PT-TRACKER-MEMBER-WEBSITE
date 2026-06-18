@@ -6,9 +6,9 @@ from flask import Flask, redirect, render_template, request, url_for
 from flask_login import LoginManager
 from sqlalchemy import text
 
-# Add parent directory to path to import shared database
-parent_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-sys.path.insert(0, parent_dir)
+# Add member-website directory to path to import backend modules
+member_website_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.insert(0, member_website_dir)
 
 from backend.database import db
 from backend.config import Config

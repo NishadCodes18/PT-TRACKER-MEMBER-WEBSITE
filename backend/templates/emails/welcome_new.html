@@ -1,0 +1,35 @@
+{% extends "emails/base.html" %}
+
+{% block email_content %}
+<div class="greeting">Hi {{ client_name }},</div>
+
+<div class="content">
+    <p>Welcome to <strong>{{ gym_name }}</strong>!</p>
+    {% if trainer_name %}
+    <p>Your trainer <strong>{{ trainer_name }}</strong> is ready to support you on your fitness journey.</p>
+    {% endif %}
+    <p>We're excited to have you join our fitness community.</p>
+</div>
+
+<div class="highlight-box" style="background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%); border-left-color: #28a745;">
+    <strong style="color: #28a745;">Your PT Program Started</strong>
+    <div class="info-row">
+        <span class="info-label">PT Amount:</span>
+        <span class="info-value">{{ pt_amount }}</span>
+    </div>
+    <div class="info-row">
+        <span class="info-label">Session Time:</span>
+        <span class="info-value">{{ session_time }}</span>
+    </div>
+    {% if renewal_date %}
+    <div class="info-row">
+        <span class="info-label">Renewal Date:</span>
+        <span class="info-value">{{ renewal_date }}</span>
+    </div>
+    {% endif %}
+</div>
+
+<div class="content">
+    <p><strong>Questions?</strong> Contact us at <a href="mailto:{{ support_email }}" style="color: #667eea; text-decoration: none;"><strong>{{ support_email }}</strong></a></p>
+</div>
+{% endblock %}
